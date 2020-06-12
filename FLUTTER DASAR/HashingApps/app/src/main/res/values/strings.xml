@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Hashing Apps</string>
+    <string name="enter_text">Enter text</string>
+    <string name="encrypt">Encrypt</string>
 </resources>
