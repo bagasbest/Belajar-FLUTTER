@@ -27,13 +27,7 @@
         android:layout_below="@id/outputText"
         android:layout_marginTop="20dp"
         android:text="@string/encrypt" />
-    <Button
-        android:id="@+id/btnDec"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnEnc"
-        android:layout_marginTop="20dp"
-        android:text="Decrypt" />
+
 
 
 

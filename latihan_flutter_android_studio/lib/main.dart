@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         ),
         body: Center(
             child: Container(
-                color: Colors.lightBlue,
+                color: Colors.pink,
                 width: 150,
                 height: 100,
                 child: Text(
