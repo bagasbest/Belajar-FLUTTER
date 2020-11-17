@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "174988686232",
+    "firebase_url": "https://flutter-apps-7398b.firebaseio.com",
+    "project_id": "flutter-apps-7398b",
+    "storage_bucket": "flutter-apps-7398b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:174988686232:android:014d3ddc24c921dd68b1ed",
+        "android_client_info": {
+          "package_name": "com.bagasbest.firebase_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "174988686232-8etoeg34mp42t2bvtieffo3tpi59vrmu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRCRsmgNgXU-FLaWTjz1eKCA5ATOzHzW0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "174988686232-8etoeg34mp42t2bvtieffo3tpi59vrmu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
