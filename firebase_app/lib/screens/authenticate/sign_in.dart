@@ -13,8 +13,10 @@ class _SignInState extends State<SignIn> {
   //text field state
   String email = '';
   String password = '';
+  String error = '';
 
   final AuthServices _auth = AuthServices();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,7 @@ class _SignInState extends State<SignIn> {
         body: Container(
             padding: EdgeInsets.symmetric(horizontal: 50.0),
             child: Form(
+              key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -47,12 +50,15 @@ class _SignInState extends State<SignIn> {
                   SizedBox(
                     height: 10.0,
                   ),
-                  TextFormField(onChanged: (val) {
-                    setState(() {
-                      //email
-                      email = val;
-                    });
-                  }),
+                  TextFormField(
+                      validator: (val) =>
+                          val.isEmpty ? 'Emter an valid email' : null,
+                      onChanged: (val) {
+                        setState(() {
+                          //email
+                          email = val;
+                        });
+                      }),
 
                   //password
                   SizedBox(
@@ -60,6 +66,7 @@ class _SignInState extends State<SignIn> {
                   ),
                   TextFormField(
                       //password
+                      validator: (val) => val.length < 6 ? 'Password min 6 digit' : null,
                       obscureText: true,
                       onChanged: (val) {
                         setState(() {
@@ -72,9 +79,13 @@ class _SignInState extends State<SignIn> {
                     margin: EdgeInsets.symmetric(vertical: 16),
                     child: RaisedButton(
                       onPressed: () async {
-                        print("Email    : " + email);
-                        print("Password : " + password);
-                        //go to homepage
+                        //validate input and login
+                        if(_formKey.currentState.validate()) {
+                          dynamic result = await _auth.signInWithEmailAndPassword(email, password);
+                          if(result == null) {
+                            error = 'Please input valid email';
+                          }
+                        }
                       },
                       child: Text(
                         "Login",
@@ -82,7 +93,9 @@ class _SignInState extends State<SignIn> {
                       ),
                       color: Colors.pink[400],
                     ),
-                  )
+                  ),
+                  SizedBox(height: 16,),
+                  Text(error, style: TextStyle(color: Colors.red),)
                 ],
               ),
             )),
