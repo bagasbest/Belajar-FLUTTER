@@ -1,27 +1,25 @@
 import 'package:firebase_app/services/auth.dart';
 import 'package:flutter/material.dart';
 
-class SignIn extends StatefulWidget {
+class Register extends StatefulWidget {
   final Function toggleView;
-  SignIn({this.toggleView});
+  Register({this.toggleView});
 
   @override
-  _SignInState createState() => _SignInState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
-  //text field state
+class _RegisterState extends State<Register> {
+  final AuthServices _authServices = AuthServices();
   String email = '';
   String password = '';
-
-  final AuthServices _auth = AuthServices();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Sign-in"),
+          title: Text("Register"),
           actions: <Widget>[
             FlatButton.icon(
                 onPressed: () {
@@ -32,7 +30,7 @@ class _SignInState extends State<SignIn> {
                   color: Colors.pinkAccent,
                 ),
                 label: Text(
-                  "Register",
+                  "Sign-in",
                   style: TextStyle(color: Colors.white),
                 ))
           ],
@@ -77,7 +75,7 @@ class _SignInState extends State<SignIn> {
                         //go to homepage
                       },
                       child: Text(
-                        "Login",
+                        "Register",
                         style: TextStyle(color: Colors.white),
                       ),
                       color: Colors.pink[400],
