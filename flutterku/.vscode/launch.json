@@ -8,7 +8,7 @@
             "name": "flutterku",
             "request": "launch",
             "type": "dart",
-            "program": "lib/ImageWidget.dart"
+            "program": "lib/SpacerWidget.dart"
         }
     ]
 }
