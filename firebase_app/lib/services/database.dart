@@ -40,13 +40,11 @@ class DatabaseService {
 
   //get brews stream
   Stream<List<Brew>> get brews {
-    return brewCollection.snapshots()
-      .map(_brewListFromSnapshot);
+    return brewCollection.snapshots().map(_brewListFromSnapshot);
   }
 
   //get user doc stream
   Stream<UserData> get userData {
-    return brewCollection.doc(uid)
-      .snapshots().map(_userDatafromSnapshot)
+    return brewCollection.doc(uid).snapshots().map(_userDatafromSnapshot);
   }
 }
