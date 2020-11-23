@@ -18,7 +18,7 @@ class MainPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Custom Card Example',
+          'Surat Pagi Hari',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Color(0xFF8C062F),
@@ -46,7 +46,7 @@ class MainPage extends StatelessWidget {
                         size: 50,
                         color: Colors.grey,
                       ),
-                      shadowColor: Colors.red.shade100,
+                      shadowColor: Colors.black,
                     ),
                   ),
                 ],
@@ -93,10 +93,10 @@ class MainPage extends StatelessWidget {
                             child: Column(
                               children: [
                                 Text(
-                                  'Lagi Belajar Flutter, Jangan Ganggu!!!',
+                                  'Sinar Mentari Mucul Membuka Pagi',
                                   style: TextStyle(
                                     color: Color(0xFFF56D5D),
-                                    fontSize: 25,
+                                    fontSize: 20,
                                   ),
                                   maxLines: 2,
                                   textAlign: TextAlign.center,
@@ -177,10 +177,13 @@ class MainPage extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.keyboard_arrow_right,
-                    size: 50,
-                    color: Colors.grey,
+                  IconShadowWidget(
+                    Icon(
+                      Icons.keyboard_arrow_right,
+                      size: 50,
+                      color: Colors.grey,
+                    ),
+                    shadowColor: Colors.black,
                   ),
                 ],
               ),
