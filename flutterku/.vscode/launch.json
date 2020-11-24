@@ -8,7 +8,7 @@
             "name": "flutterku",
             "request": "launch",
             "type": "dart",
-            "program": "lib/TabBar.dart"
+            "program": "lib/ColorfulButton.dart"
         }
     ]
 }
