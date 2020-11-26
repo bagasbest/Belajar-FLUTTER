@@ -8,7 +8,7 @@
             "name": "flutterku",
             "request": "launch",
             "type": "dart",
-            "program": "lib/QRscan.dart"
+            "program": "lib/HttpRequestList.dart"
         }
     ]
 }
