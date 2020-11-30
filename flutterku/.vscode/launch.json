@@ -8,7 +8,7 @@
             "name": "flutterku",
             "request": "launch",
             "type": "dart",
-            "program": "lib/DocComment.dart"
+            "program": "lib/Timer.dart"
         }
     ]
 }
