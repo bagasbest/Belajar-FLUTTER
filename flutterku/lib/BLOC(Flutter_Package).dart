@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterku/AnimatedContainer_GestureDetector.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:bloc/bloc.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  BlocSupervisor.delegate = await HydratedBlocDelegate.build();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: BlocProvider<ColorBloc>(
-          create: (context) => ColorBloc(), child: MainPage()),
+          builder: (context) => ColorBloc(), child: MainPage()),
     );
   }
 }
@@ -26,7 +31,7 @@ class MainPage extends StatelessWidget {
         children: [
           FloatingActionButton(
             onPressed: () {
-              bloc.add(ColorEvent.to_amber);
+              bloc..dispatch(ColorEvent.to_amber);
             },
             backgroundColor: Colors.amber,
             child: Icon(Icons.face),
@@ -36,7 +41,7 @@ class MainPage extends StatelessWidget {
           ),
           FloatingActionButton(
             onPressed: () {
-              bloc.add(ColorEvent.to_lightBlue);
+              bloc.dispatch(ColorEvent.to_lightBlue);
             },
             backgroundColor: Colors.lightBlue,
             child: Icon(Icons.face),
@@ -62,15 +67,31 @@ class MainPage extends StatelessWidget {
 
 enum ColorEvent { to_amber, to_lightBlue }
 
-class ColorBloc extends Bloc<ColorEvent, Color> {
-  Color _color = Colors.amber;
-
-  ColorBloc() : super(Colors.amber);
+class ColorBloc extends HydratedBloc<ColorEvent, Color> {
+  Color get initialState => super.initialState ?? Colors.amber;
 
   @override
   Stream<Color> mapEventToState(ColorEvent event) async* {
-    _color = (event == ColorEvent.to_amber) ? Colors.amber : Colors.lightBlue;
-    //masukkan data ke stream
-    yield _color;
+    yield (event == ColorEvent.to_amber) ? Colors.amber : Colors.lightBlue;
+  }
+
+  @override
+  Color fromJson(Map<String, dynamic> json) {
+    // TODO: implement fromJson
+    try {
+      return Color(json['color'] as int);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  Map<String, int> toJson(Color state) {
+    // TODO: implement toJson
+    try {
+      return {'color': state.value};
+    } catch (_) {
+      return null;
+    }
   }
 }
