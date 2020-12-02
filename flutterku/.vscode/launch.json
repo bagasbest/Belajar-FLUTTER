@@ -8,7 +8,7 @@
             "name": "flutterku",
             "request": "launch",
             "type": "dart",
-            "program": "lib/MVVM.dart"
+            "program": "lib/MVVM/main.dart"
         }
     ]
 }
