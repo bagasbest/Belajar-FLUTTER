@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:jadwal_matkul/HomePage.dart';
+import 'package:jadwal_matkul/MyTask.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -14,10 +18,38 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _isHidden = true;
 
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = new GoogleSignIn();
+
   void _toggleVisibility() {
     setState(() {
       _isHidden = !_isHidden;
     });
+  }
+
+  Future<User> _signIn() async {
+    try {
+      final GoogleSignInAccount googleSignInAccount =
+          await googleSignIn.signIn();
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken);
+
+      User user = (await auth.signInWithCredential(credential)).user;
+
+      return Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyTask(
+                    user: user,
+                    googleSignIn: googleSignIn,
+                  )));
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -114,14 +146,18 @@ class _LoginPageState extends State<LoginPage> {
                   child: RaisedButton(
                     onPressed: () {
                       if (email.isNotEmpty && password.isNotEmpty) {
-                        Fluttertoast.showToast(
-                            msg: email + " " + password,
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.orange,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
+                        toast(email, password, email + " " + password);
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePage()));
+                      } else {
+                        if (email.isEmpty) {
+                          toast(email, password, "Email tidak boleh");
+                        } else {
+                          toast(email, password, "Password tidak boleh kosong");
+                        }
                       }
                     },
                     child: Text(
@@ -131,6 +167,34 @@ class _LoginPageState extends State<LoginPage> {
                     shape: StadiumBorder(),
                     color: Colors.orange,
                   ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                RaisedButton(
+                  shape: StadiumBorder(),
+                  color: Colors.orange,
+                  onPressed: () {
+                    _signIn();
+                  },
+                  child: Row(
+                    children: [
+                      Spacer(
+                        flex: 1,
+                      ),
+                      Icon(Icons.login),
+                      Spacer(
+                        flex: 2,
+                      ),
+                      Text("Sign-In",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
+                      Spacer(
+                        flex: 1,
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
@@ -139,4 +203,15 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+}
+
+void toast(String email, String password, String pesan) {
+  Fluttertoast.showToast(
+      msg: pesan,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.orange,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }
