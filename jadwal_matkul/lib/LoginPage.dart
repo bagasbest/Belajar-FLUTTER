@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jadwal_matkul/HomePage.dart';
@@ -168,8 +169,12 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.orange,
                   ),
                 ),
-                SizedBox(
-                  height: 20,
+                Container(
+                  margin: EdgeInsets.all(16),
+                  child: Text(
+                    "-Atau-",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
                 RaisedButton(
                   shape: StadiumBorder(),
@@ -182,9 +187,12 @@ class _LoginPageState extends State<LoginPage> {
                       Spacer(
                         flex: 1,
                       ),
-                      Icon(Icons.login),
-                      Spacer(
-                        flex: 2,
+                      Icon(
+                        Icons.login,
+                        color: Colors.white,
+                      ),
+                      Container(
+                        width: 15,
                       ),
                       Text("Sign-In",
                           style: TextStyle(
@@ -195,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
