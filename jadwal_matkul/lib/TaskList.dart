@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jadwal_matkul/EditTask.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class TaskList extends StatelessWidget {
   TaskList({this.document});
@@ -23,7 +22,7 @@ class TaskList extends StatelessWidget {
             FirebaseFirestore.instance.runTransaction((transaction) async {
               DocumentSnapshot snapshot =
                   await transaction.get(document[i].reference);
-              await transaction.delete(snapshot.reference);
+              transaction.delete(snapshot.reference);
             });
 
             Scaffold.of(context).showSnackBar(

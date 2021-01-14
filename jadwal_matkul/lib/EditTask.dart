@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:jadwal_matkul/MyTask.dart';
 
 class EditTask extends StatefulWidget {
   EditTask({this.title, this.dueDate, this.note, this.index});
@@ -26,7 +25,7 @@ class _EditTaskState extends State<EditTask> {
   void _editTask() {
     FirebaseFirestore.instance.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(widget.index);
-      await transaction.update(snapshot.reference,
+      transaction.update(snapshot.reference,
           {"title": newTask, "note": note, "dueDate": _dueDate});
     });
     Navigator.pop(context);

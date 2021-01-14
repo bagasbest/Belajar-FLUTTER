@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jadwal_matkul/HomePage.dart';
@@ -28,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  // ignore: missing_return
   Future<User> _signIn() async {
     try {
       final GoogleSignInAccount googleSignInAccount =
@@ -57,6 +57,9 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          title: Text(""),
+        ),
         body: Center(
           child: Container(
             margin: EdgeInsets.only(left: 30, right: 30),
