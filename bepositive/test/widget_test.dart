@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:bepositive/screen/main.dart';
+import 'file:///D:/TUBES_GALERI/Belajar-FLUTTER/bepositive/lib/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
