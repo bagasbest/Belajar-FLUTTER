@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'category_card_widget.dart';
-import 'lokasi_bepositive_screen.dart';
+import 'list_lokasi_bepositive_screen.dart';
 
 class NavigationHomeScreen extends StatelessWidget {
 
@@ -122,7 +122,7 @@ class NavigationHomeScreen extends StatelessWidget {
                             cardTitle: "Lokasi BePostive",
                             press: () {
                               Route route = MaterialPageRoute(
-                                  builder: (context) => LokasiBePositive());
+                                  builder: (context) => ListLokasiBePositive());
                               Navigator.push(context, route);
                             },
                           ),
