@@ -8,6 +8,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fundametal/model/article.dart';
+import 'package:fundametal/view/styles.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsApp extends StatelessWidget {
@@ -17,14 +18,34 @@ class NewsApp extends StatelessWidget {
       title: 'News App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        primaryColor: primaryColor,
+        accentColor: secondaryColor,
+        scaffoldBackgroundColor: Colors.white,
+        textTheme: myTextTheme,
+        buttonTheme: ButtonThemeData(
+            buttonColor: secondaryColor,
+            textTheme: ButtonTextTheme.primary,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(0)),
+            )
+        ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+
       initialRoute: NewListPage.routeName,
       routes: {
         NewListPage.routeName: (context) => NewListPage(),
-        ArticleDetailPage.routeName: (context) => ArticleDetailPage(
-            article: ModalRoute.of(context).settings.arguments),
-        ArticleWebView.routeName: (context) => ArticleWebView(url:  ModalRoute.of(context).settings.arguments,),
+        ArticleDetailPage.routeName: (context) =>
+            ArticleDetailPage(
+                article: ModalRoute
+                    .of(context)
+                    .settings
+                    .arguments),
+        ArticleWebView.routeName: (context) =>
+            ArticleWebView(url: ModalRoute
+                .of(context)
+                .settings
+                .arguments,),
       },
     );
   }
@@ -38,11 +59,14 @@ class NewListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('News App'),
+        textTheme: myTextTheme.apply(bodyColor: Colors.black),
+        elevation: 0,
       ),
       body: FutureBuilder(
+
         ///DefaultAssetBundle pada dasarnya juga merupakan sebuah widget. Widget ini akan membaca String dari berkas aset yang kita tentukan.
         future:
-            DefaultAssetBundle.of(context).loadString('assets/articles.json'),
+        DefaultAssetBundle.of(context).loadString('assets/articles.json'),
         builder: (context, snapshot) {
           final List<Article> articles = parseArticles(snapshot.data);
           return ListView.builder(
@@ -152,9 +176,6 @@ class ArticleWebView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('News App'),
-      ),
       body: WebView(
         initialUrl: url,
 
