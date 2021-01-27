@@ -26,26 +26,18 @@ class NewsApp extends StatelessWidget {
             buttonColor: secondaryColor,
             textTheme: ButtonTextTheme.primary,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(0)),
-            )
-        ),
+              borderRadius: BorderRadius.all(Radius.circular(0)),
+            )),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-
       initialRoute: NewListPage.routeName,
       routes: {
         NewListPage.routeName: (context) => NewListPage(),
-        ArticleDetailPage.routeName: (context) =>
-            ArticleDetailPage(
-                article: ModalRoute
-                    .of(context)
-                    .settings
-                    .arguments),
-        ArticleWebView.routeName: (context) =>
-            ArticleWebView(url: ModalRoute
-                .of(context)
-                .settings
-                .arguments,),
+        ArticleDetailPage.routeName: (context) => ArticleDetailPage(
+            article: ModalRoute.of(context).settings.arguments),
+        ArticleWebView.routeName: (context) => ArticleWebView(
+              url: ModalRoute.of(context).settings.arguments,
+            ),
       },
     );
   }
@@ -63,10 +55,9 @@ class NewListPage extends StatelessWidget {
         elevation: 0,
       ),
       body: FutureBuilder(
-
         ///DefaultAssetBundle pada dasarnya juga merupakan sebuah widget. Widget ini akan membaca String dari berkas aset yang kita tentukan.
         future:
-        DefaultAssetBundle.of(context).loadString('assets/articles.json'),
+            DefaultAssetBundle.of(context).loadString('assets/articles.json'),
         builder: (context, snapshot) {
           final List<Article> articles = parseArticles(snapshot.data);
           return ListView.builder(
@@ -82,22 +73,26 @@ class NewListPage extends StatelessWidget {
 }
 
 Widget _buildArticleItem(BuildContext context, Article article) {
-  return ListTile(
-    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-    leading: Image.network(
-      article.urlToImage,
-      fit: BoxFit.contain,
-      width: 100,
+  return Material(
+    child: ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      leading: Hero(
+        tag: article.urlToImage,
+        child: Image.network(
+          article.urlToImage,
+          width: 100,
+        ),
+      ),
+      title: Text(
+        article.title,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      subtitle: Text(article.author),
+      onTap: () {
+        Navigator.pushNamed(context, ArticleDetailPage.routeName,
+            arguments: article);
+      },
     ),
-    title: Text(
-      article.title,
-      style: TextStyle(fontWeight: FontWeight.bold),
-    ),
-    subtitle: Text(article.author),
-    onTap: () {
-      Navigator.pushNamed(context, ArticleDetailPage.routeName,
-          arguments: article);
-    },
   );
 }
 
@@ -121,7 +116,10 @@ class ArticleDetailPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.network(article.urlToImage),
+            Hero(
+              tag: article.urlToImage,
+              child: Image.network(article.urlToImage),
+            ),
             Padding(
               padding: EdgeInsets.all(10),
               child: Column(
@@ -178,7 +176,6 @@ class ArticleWebView extends StatelessWidget {
     return Scaffold(
       body: WebView(
         initialUrl: url,
-
       ),
     );
   }
