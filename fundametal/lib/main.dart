@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fundametal/screen/cupertino.dart';
 import 'package:fundametal/screen/custom_widget.dart';
 import 'package:fundametal/screen/explicit_animation.dart';
 import 'package:fundametal/screen/gesture_detection.dart';
@@ -14,6 +15,6 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SliverListAndGrid();
+    return Cupertino();
   }
 }
