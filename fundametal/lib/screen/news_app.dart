@@ -5,31 +5,40 @@
       Menambahkan packagewebview untuk menampilkan konten web.
  */
 
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fundametal/model/article.dart';
 import 'package:fundametal/view/styles.dart';
+import 'package:fundametal/widgets/article_list_page.dart';
+import 'package:fundametal/widgets/platform_widget.dart';
+import 'package:fundametal/widgets/settings_page.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import 'latihan_cupertino.dart';
 
 class NewsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'News App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        primaryColor: primaryColor,
-        accentColor: secondaryColor,
-        scaffoldBackgroundColor: Colors.white,
-        textTheme: myTextTheme,
-        buttonTheme: ButtonThemeData(
-            buttonColor: secondaryColor,
-            textTheme: ButtonTextTheme.primary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(0)),
-            )),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+          primarySwatch: Colors.blue,
+          primaryColor: primaryColor,
+          accentColor: secondaryColor,
+          scaffoldBackgroundColor: Colors.white,
+          textTheme: myTextTheme,
+          buttonTheme: ButtonThemeData(
+              buttonColor: secondaryColor,
+              textTheme: ButtonTextTheme.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(0)),
+              )),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            selectedItemColor: secondaryColor,
+            unselectedItemColor: Colors.grey,
+          )),
       initialRoute: NewListPage.routeName,
       routes: {
         NewListPage.routeName: (context) => NewListPage(),
@@ -43,58 +52,68 @@ class NewsApp extends StatelessWidget {
   }
 }
 
-class NewListPage extends StatelessWidget {
+class NewListPage extends StatefulWidget {
   static const routeName = '/article_list';
 
   @override
+  _NewListPageState createState() => _NewListPageState();
+}
+
+class _NewListPageState extends State<NewListPage> {
+  int _bottomNavIndex = 0;
+
+  final tabs = [
+    ArticleListPage(),
+    SettingsPages(),
+  ];
+
+  @override
   Widget build(BuildContext context) {
+    return PlatformWidget(
+      androidBuilder: _buildAndroid,
+      iosBuilder: _buildIos,
+    );
+  }
+
+  Widget _buildAndroid(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('News App'),
+        title: Text((_bottomNavIndex == 0) ? 'News App' : 'Settings'),
         textTheme: myTextTheme.apply(bodyColor: Colors.black),
         elevation: 0,
       ),
-      body: FutureBuilder(
-        ///DefaultAssetBundle pada dasarnya juga merupakan sebuah widget. Widget ini akan membaca String dari berkas aset yang kita tentukan.
-        future:
-            DefaultAssetBundle.of(context).loadString('assets/articles.json'),
-        builder: (context, snapshot) {
-          final List<Article> articles = parseArticles(snapshot.data);
-          return ListView.builder(
-            itemCount: articles.length,
-            itemBuilder: (context, index) {
-              return _buildArticleItem(context, articles[index]);
-            },
-          );
+      body: tabs[_bottomNavIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _bottomNavIndex,
+        items: _bottomNavBarItems,
+        onTap: (selected) {
+          setState(() {
+            _bottomNavIndex = selected;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget _buildIos(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text('News App'),
+        transitionBetweenRoutes: false,
+      ),
+      child: CupertinoTabScaffold(
+        tabBar: CupertinoTabBar(
+          items: _bottomNavBarItems,
+        ),
+        tabBuilder: (context, index) {
+          return tabs[_bottomNavIndex];
         },
       ),
     );
   }
 }
 
-Widget _buildArticleItem(BuildContext context, Article article) {
-  return Material(
-    child: ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      leading: Hero(
-        tag: article.urlToImage,
-        child: Image.network(
-          article.urlToImage,
-          width: 100,
-        ),
-      ),
-      title: Text(
-        article.title,
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-      subtitle: Text(article.author),
-      onTap: () {
-        Navigator.pushNamed(context, ArticleDetailPage.routeName,
-            arguments: article);
-      },
-    ),
-  );
-}
+
 
 ///Buat berkas baru bernama detail_page.dart yang berisi kode untuk berperan sebagai detail dari news app list
 class ArticleDetailPage extends StatelessWidget {
@@ -180,3 +199,14 @@ class ArticleWebView extends StatelessWidget {
     );
   }
 }
+
+List<BottomNavigationBarItem> _bottomNavBarItems = [
+  BottomNavigationBarItem(
+    icon: Icon(Platform.isIOS ? CupertinoIcons.news : Icons.public),
+    title: Text('Headline'),
+  ),
+  BottomNavigationBarItem(
+    icon: Icon(Platform.isIOS ? CupertinoIcons.settings : Icons.settings),
+    title: Text('Settings'),
+  ),
+];
