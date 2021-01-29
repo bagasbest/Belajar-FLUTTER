@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:beresto/model/resturant.dart';
+import 'package:beresto/screen/detail_resto_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -126,7 +127,6 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-
         ],
       ),
     );
@@ -139,13 +139,12 @@ class ListOfRestaurant extends StatefulWidget {
 }
 
 class _ListOfRestaurantState extends State<ListOfRestaurant> {
-
   List _items = [];
 
   /// Fetch content from json file
   Future<dynamic> readJson() async {
     final String response =
-    await rootBundle.loadString('assets/local_restaurant.json');
+        await rootBundle.loadString('assets/local_restaurant.json');
     final data = await json.decode(response);
     _items = data["restaurants"];
     print('AAAAAAAAA');
@@ -159,17 +158,22 @@ class _ListOfRestaurantState extends State<ListOfRestaurant> {
 
   @override
   Widget build(BuildContext context) {
-
-   // return
-   //    FutureBuilder(
-   //    future: readJson(),
-   //    builder: (context, snapshot) {
+    return FutureBuilder(
+      future: readJson(),
+      builder: (context, snapshot) {
         return (_items.length > 0)
             ? ListView.builder(
                 itemCount: _items.length,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Route route = MaterialPageRoute(
+                        builder: (context) => DetailRestoPage(
+                          data: _items[index],
+                        ),
+                      );
+                      Navigator.push(context, route);
+                    },
                     splashColor: Colors.grey,
                     child: Card(
                       child: ListTile(
@@ -234,70 +238,10 @@ class _ListOfRestaurantState extends State<ListOfRestaurant> {
                       ),
                     ),
                   );
-                  //_buildRestaurantItem(context, _items[index]);
-                  // Card(
-                  //   margin: EdgeInsets.all(10),
-                  //   child: ListTile(
-                  //     leading: Text(_items[index]["id"]),
-                  //     title: Text(_items[index]["name"]),
-                  //     subtitle: Text(_items[index]["description"], maxLines: 2,),
-                  //   ),
-                  // );
                 },
               )
             : Container();
-    //   },
-    // );
+      },
+    );
   }
-}
-
-Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant) {
-  return Material(
-    child: ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      leading: Hero(
-        tag: restaurant.pictureId,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Image.network(
-            restaurant.pictureId,
-            width: 100,
-          ),
-        ),
-      ),
-      title: Text(
-        restaurant.name,
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-      subtitle: Column(
-        children: [
-          Row(
-            children: [
-              Icon(
-                CupertinoIcons.map_pin,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text(restaurant.city),
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              Icon(
-                CupertinoIcons.star_fill,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text(restaurant.rating.toString()),
-            ],
-          ),
-        ],
-      ),
-    ),
-  );
 }
