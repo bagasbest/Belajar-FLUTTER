@@ -5,7 +5,45 @@ import 'package:fundametal/screen/news_app.dart';
 
 class ArticleListPage extends StatelessWidget {
   Widget build(BuildContext context) {
-    return _buildList(context);
+    return Column(
+      children: [
+        TextField(
+          decoration: InputDecoration(
+            hintText: 'Kamu mau makan/minum apa ?',
+            border: InputBorder.none,
+            icon: IconButton(
+              icon: Icon(CupertinoIcons.search),
+              onPressed: () {
+                showCupertinoDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (context) {
+                    return CupertinoAlertDialog(
+                      title: Text('Coming Soon :)'),
+                      content: Text(
+                          'This feature will be developed soon!'),
+                      actions: [
+                        CupertinoDialogAction(
+                          child: Text('OK'),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+        Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: _buildList(context),
+        )
+
+      ],
+    );
+
   }
 }
 
