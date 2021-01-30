@@ -93,14 +93,32 @@ class DetailRestoPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Ulasan',
+                        'Feedback',
                         style: TextStyle(fontSize: 18),
                       ),
                       FlatButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showCupertinoDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (context) {
+                              return CupertinoAlertDialog(
+                                title: Text('Coming Soon :)'),
+                                content: Text(
+                                    'This feature will be developed soon!'),
+                                actions: [
+                                  CupertinoDialogAction(
+                                    child: Text('OK'),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
                         splashColor: Colors.grey,
                         child: Text(
-                          'Lihat Semua',
+                          'See all comment',
                           style: TextStyle(color: Colors.orangeAccent),
                         ),
                       ),
@@ -112,30 +130,15 @@ class DetailRestoPage extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(
-                        Icons.star,
-                        color: Colors.orangeAccent,
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: Colors.orangeAccent,
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: Colors.orangeAccent,
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: Colors.orangeAccent,
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: Colors.orangeAccent,
-                      ),
+                      StarIcon(),
+                      StarIcon(),
+                      StarIcon(),
+                      StarIcon(),
+                      StarIcon(),
                       Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: Text(
-                            data['rating'].toString() + ' / 5.0 . 231 Ulasan'),
+                            data['rating'].toString() + ' / 5.0 . 231 Feeds'),
                       ),
                     ],
                   ),
@@ -157,7 +160,7 @@ class DetailRestoPage extends StatelessWidget {
                         size: 50,
                       ),
                       Text(
-                        'Lokasi: ' + data['city'],
+                        'Location: ' + data['city'],
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
@@ -184,7 +187,7 @@ class DetailRestoPage extends StatelessWidget {
                     },
                     color: Colors.orangeAccent,
                     child: Text(
-                      'RESERVASI',
+                      'RESERVATION',
                       style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
@@ -210,6 +213,13 @@ class DetailRestoPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Icon StarIcon() {
+    return Icon(
+                      Icons.star,
+                      color: Colors.orangeAccent,
+                    );
   }
 }
 
