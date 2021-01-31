@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/services.dart';
-
 RestaurantModel restaurantModelFromJson(String str) =>
     RestaurantModel.fromJson(json.decode(str));
 
@@ -25,7 +23,6 @@ class RestaurantModel {
         "restaurants": List<dynamic>.from(restaurants.map((x) => x.toJson())),
       };
 }
-
 
 class Restaurant {
   Restaurant({

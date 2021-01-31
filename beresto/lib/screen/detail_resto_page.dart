@@ -188,7 +188,8 @@ class DetailRestoPage extends StatelessWidget {
                     color: Colors.orangeAccent,
                     child: Text(
                       'RESERVATION',
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                 ),
@@ -217,9 +218,9 @@ class DetailRestoPage extends StatelessWidget {
 
   Icon StarIcon() {
     return Icon(
-                      Icons.star,
-                      color: Colors.orangeAccent,
-                    );
+      Icons.star,
+      color: Colors.orangeAccent,
+    );
   }
 }
 
@@ -242,15 +243,15 @@ class _FavoriteButtonState extends State<FavoriteButton> {
         setState(() {
           isFavorite = !isFavorite;
           (isFavorite)
-              ? toast('You loved this restaurant')
-              : toast('You not loved this restaurant');
+              ? _toast('You loved this restaurant')
+              : _toast('You not loved this restaurant');
         });
       },
     );
   }
 }
 
-toast(String message) {
+_toast(String message) {
   Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,

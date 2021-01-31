@@ -17,6 +17,7 @@ class _ReservationPageState extends State<ReservationPage> {
   DateTime _dueDate = DateTime.now();
   String _dateText = "";
 
+  /// Convert DateTime to custom form example: DD/MM/YYYY
   Future<Null> _selectDueDate(BuildContext context) async {
     final picked = await showDatePicker(
         context: context,
@@ -137,7 +138,7 @@ class _ReservationPageState extends State<ReservationPage> {
                       );
                       Navigator.push(context, route);
                     } else {
-                      toast('Date Time and Seat number must not empty!');
+                      _toast('Date Time and Seat number must not empty!');
                     }
                   },
                   child: Text(
@@ -203,7 +204,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
   }
 }
 
-toast(String message) {
+_toast(String message) {
   Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
