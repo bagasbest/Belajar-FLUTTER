@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fundametal/widgets/platform_widget.dart';
 
 class SettingsPages extends StatelessWidget {
+  static const String settingTitle = 'Settings';
+
   @override
   Widget build(BuildContext context) {
     return PlatformWidget(
@@ -15,7 +17,7 @@ class SettingsPages extends StatelessWidget {
   Widget _buildAndroid(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: Text(settingTitle),
       ),
       body: _buildList(context),
     );
@@ -24,7 +26,7 @@ class SettingsPages extends StatelessWidget {
   Widget _buildIos(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text('Settings'),
+        middle: Text(settingTitle),
       ),
       child: _buildList(context),
     );
@@ -70,7 +72,8 @@ Widget _buildList(BuildContext context) {
                             ),
                           ],
                         );
-                      });
+                      },
+                    );
             },
           ),
         ),

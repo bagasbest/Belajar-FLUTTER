@@ -8,6 +8,7 @@ import 'package:fundametal/screen/named_navigation_routing.dart';
 import 'package:fundametal/screen/news_app.dart';
 import 'package:fundametal/screen/sliver_list_and_grid.dart';
 import 'package:fundametal/screen/slivers.dart';
+import 'package:fundametal/screen/state_management.dart';
 
 void main() {
   runApp(MyApp());

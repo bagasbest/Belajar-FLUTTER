@@ -1,89 +1,85 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fundametal/model/article.dart';
-import 'package:fundametal/screen/news_app.dart';
+import 'package:fundametal/model/article_new.dart';
+import 'package:fundametal/service/api_service.dart';
+import 'package:fundametal/widgets/card_article.dart';
+import 'package:fundametal/widgets/platform_widget.dart';
 
-class ArticleListPage extends StatelessWidget {
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(
-          decoration: InputDecoration(
-            hintText: 'Kamu mau makan/minum apa ?',
-            border: InputBorder.none,
-            icon: IconButton(
-              icon: Icon(CupertinoIcons.search),
-              onPressed: () {
-                showCupertinoDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (context) {
-                    return CupertinoAlertDialog(
-                      title: Text('Coming Soon :)'),
-                      content: Text(
-                          'This feature will be developed soon!'),
-                      actions: [
-                        CupertinoDialogAction(
-                          child: Text('OK'),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      ],
-                    );
-                  },
+class ArticleListPage extends StatefulWidget {
+  @override
+  _ArticleListPageState createState() => _ArticleListPageState();
+}
+
+class _ArticleListPageState extends State<ArticleListPage> {
+  Future<ArticleResult> _article;
+
+  @override
+  void initState() {
+    _article = ApiService().topHeadlines();
+    super.initState();
+  }
+
+  Widget _buildList(BuildContext context) {
+    return FutureBuilder(
+      future: _article,
+      builder: (context, AsyncSnapshot<ArticleResult> snapshot) {
+        var state = snapshot.connectionState;
+        if (state != ConnectionState.done) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data.articles.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                var article = snapshot.data.articles[index];
+                return CardArticle(
+                  article: article,
                 );
               },
-            ),
-          ),
-        ),
-        Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: _buildList(context),
-        )
-
-      ],
-    );
-
-  }
-}
-
-FutureBuilder<String> _buildList(BuildContext context) {
-  return FutureBuilder(
-    ///DefaultAssetBundle pada dasarnya juga merupakan sebuah widget. Widget ini akan membaca String dari berkas aset yang kita tentukan.
-    future:
-    DefaultAssetBundle.of(context).loadString('assets/articles.json'),
-    builder: (context, snapshot) {
-      final List<Article> articles = parseArticles(snapshot.data);
-      return ListView.builder(
-        itemCount: articles.length,
-        itemBuilder: (context, index) {
-          return _buildArticleItem(context, articles[index]);
-        },
-      );
-    },
-  );
-}
-
-Widget _buildArticleItem(BuildContext context, Article article) {
-  return Material(
-    child: ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      leading: Hero(
-        tag: article.urlToImage,
-        child: Image.network(
-          article.urlToImage,
-          width: 100,
-        ),
-      ),
-      title: Text(
-        article.title,
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-      subtitle: Text(article.author),
-      onTap: () {
-        Navigator.pushNamed(context, ArticleDetailPage.routeName,
-            arguments: article);
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                snapshot.error.toString(),
+              ),
+            );
+          } else {
+            return Text('');
+          }
+        }
       },
-    ),
-  );
+    );
+  }
+
+  Widget _buildAndroid (BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('News App'),
+      ),
+      body: _buildList(context),
+    );
+  }
+
+  Widget _buildIos (BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text('News App'),
+        transitionBetweenRoutes: false,
+      ),
+      child: _buildList(context),
+    );
+  }
+
+  Widget build (BuildContext context) {
+    return PlatformWidget(
+      androidBuilder: _buildAndroid,
+      iosBuilder: _buildIos,
+    );
+  }
+
+
 }
+

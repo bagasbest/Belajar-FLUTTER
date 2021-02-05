@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 class PlatformWidget extends StatelessWidget {
-
   final WidgetBuilder androidBuilder;
   final WidgetBuilder iosBuilder;
 
-  PlatformWidget({this.androidBuilder, this.iosBuilder});
+  PlatformWidget({@required this.androidBuilder, @required this.iosBuilder});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +18,4 @@ class PlatformWidget extends StatelessWidget {
         return androidBuilder(context);
     }
   }
-
-
 }
