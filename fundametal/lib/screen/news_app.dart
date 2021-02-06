@@ -10,10 +10,13 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fundametal/model/article_new.dart';
+import 'package:fundametal/provider/news_provider.dart';
+import 'package:fundametal/service/api_service.dart';
 import 'package:fundametal/view/styles.dart';
 import 'package:fundametal/widgets/article_list_page.dart';
 import 'package:fundametal/widgets/platform_widget.dart';
 import 'package:fundametal/widgets/settings_page.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsApp extends StatelessWidget {
@@ -37,7 +40,6 @@ class NewsApp extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(0)),
           ),
         ),
-
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           selectedItemColor: secondaryColor,
           unselectedItemColor: Colors.grey,
@@ -67,11 +69,14 @@ class _NewListPageState extends State<NewListPage> {
   int _bottomNavIndex = 0;
 
   final tabs = [
-    ArticleListPage(),
+    ChangeNotifierProvider<NewsProvider>(
+      create: (_) => NewsProvider(apiService: ApiService()),
+      child: ArticleListPage(),
+    ),
     SettingsPages(),
   ];
 
-  void _onBottomNavTapped (int index) {
+  void _onBottomNavTapped(int index) {
     setState(() {
       _bottomNavIndex = index;
     });
@@ -98,12 +103,12 @@ class _NewListPageState extends State<NewListPage> {
 
   Widget _buildIos(BuildContext context) {
     return CupertinoTabScaffold(
-        tabBar: CupertinoTabBar(
-          items: _bottomNavBarItems,
-        ),
-        tabBuilder: (context, index) {
-          return tabs[index];
-        },
+      tabBar: CupertinoTabBar(
+        items: _bottomNavBarItems,
+      ),
+      tabBuilder: (context, index) {
+        return tabs[index];
+      },
     );
   }
 }
@@ -214,7 +219,7 @@ class ArticleWebView extends StatelessWidget {
 List<BottomNavigationBarItem> _bottomNavBarItems = [
   BottomNavigationBarItem(
     icon: Icon(Platform.isIOS ? CupertinoIcons.news : Icons.public),
-    label:  'Headline',
+    label: 'Headline',
   ),
   BottomNavigationBarItem(
     icon: Icon(Platform.isIOS ? CupertinoIcons.settings : Icons.settings),
