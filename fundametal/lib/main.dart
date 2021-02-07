@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fundametal/screen/cupertino.dart';
@@ -28,7 +26,7 @@ Future<void> main() async {
 
   runApp(
     MaterialApp(
-      initialRoute: NotificationHomePage.routename,
+      initialRoute: NotificationHomePage.routeName,
       routes: {
         NotificationHomePage.routeName: (context) => NotificationHomePage(),
         NotificationDetailPage.routeName: (context) => NotificationDetailPage(),
