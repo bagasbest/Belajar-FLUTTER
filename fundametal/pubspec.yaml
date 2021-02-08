@@ -32,6 +32,7 @@ dependencies:
   google_fonts:
   provider:
   http:
+  intl:
   flutter_local_notifications: ^4.0.0
   path_provider: ^1.6.27
   rxdart: ^0.25.0

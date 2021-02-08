@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -15,6 +17,8 @@ import 'package:fundametal/screen/sliver_list_and_grid.dart';
 import 'package:fundametal/screen/slivers.dart';
 import 'package:fundametal/screen/state_management.dart';
 import 'package:fundametal/utils/alarm_manager_background_service.dart';
+import 'package:fundametal/utils/article_background_service.dart';
+import 'package:fundametal/utils/article_notification_helper.dart';
 import 'package:fundametal/utils/notification_helper.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -22,25 +26,15 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // final NotificationHelper _notificationHelper = NotificationHelper();
-  //
-  // await _notificationHelper.initNotifications(flutterLocalNotificationsPlugin);
-  // _notificationHelper.requestIOSPermissions(flutterLocalNotificationsPlugin);
-
-  // runApp(
-  //   MaterialApp(
-  //     initialRoute: NotificationHomePage.routeName,
-  //     routes: {
-  //       NotificationHomePage.routeName: (context) => NotificationHomePage(),
-  //       NotificationDetailPage.routeName: (context) => NotificationDetailPage(),
-  //     },
-  //   ),
-  // );
-
-  final BackgroundService _service = BackgroundService();
+  final ArticleNotificationHelper _notificationHelper = ArticleNotificationHelper();
+  final ArticleBackgroundService _service = ArticleBackgroundService();
 
   _service.initializeIsolate();
-  AndroidAlarmManager.initialize();
+
+  if (Platform.isAndroid) {
+    await AndroidAlarmManager.initialize();
+  }
+  await _notificationHelper.initNotifications(flutterLocalNotificationsPlugin);
 
   runApp(MyApp());
 
@@ -49,7 +43,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return AlarmManagerHomePage();
+    return NewsApp();
   }
 }
 

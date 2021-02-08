@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fundametal/utils/notification_helper.dart';
-import 'package:fundametal/widgets/notification_custom_button.dart';
+import 'file:///D:/TUBES_GALERI/Belajar-FLUTTER/fundametal/lib/utils/notification_custom_button.dart';
 
 import '../main.dart';
 import 'notification_detail_page.dart';

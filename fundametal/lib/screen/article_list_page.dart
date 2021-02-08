@@ -57,7 +57,6 @@ import 'package:provider/provider.dart';
 //   }
 
 class ArticleListPage extends StatelessWidget {
-
   Widget _buildList() {
     return Consumer<NewsProvider>(
       builder: (context, state, _) {
@@ -77,6 +76,10 @@ class ArticleListPage extends StatelessWidget {
             },
           );
         } else if (state.state == ResultState.NoData) {
+          return Center(
+            child: Text(state.message),
+          );
+        } else if (state.state == ResultState.Error) {
           return Center(
             child: Text(state.message),
           );

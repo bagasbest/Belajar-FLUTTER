@@ -9,13 +9,19 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fundametal/common/navigation.dart';
 import 'package:fundametal/model/article_new.dart';
 import 'package:fundametal/provider/news_provider.dart';
+import 'package:fundametal/provider/schduling_provider.dart';
+import 'package:fundametal/screen/latihan_cupertino.dart';
 import 'package:fundametal/service/api_service.dart';
+import 'package:fundametal/utils/alarm_manager_background_service.dart';
+import 'package:fundametal/utils/article_background_service.dart';
+import 'package:fundametal/utils/article_notification_helper.dart';
 import 'package:fundametal/view/styles.dart';
-import 'package:fundametal/widgets/article_list_page.dart';
+import 'file:///D:/TUBES_GALERI/Belajar-FLUTTER/fundametal/lib/screen/article_list_page.dart';
 import 'package:fundametal/widgets/platform_widget.dart';
-import 'package:fundametal/widgets/settings_page.dart';
+import 'file:///D:/TUBES_GALERI/Belajar-FLUTTER/fundametal/lib/screen/settings_page.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -45,9 +51,10 @@ class NewsApp extends StatelessWidget {
           unselectedItemColor: Colors.grey,
         ),
       ),
-      initialRoute: NewListPage.routeName,
+      navigatorKey: navigatorKey,
+      initialRoute: HomePage.routeName,
       routes: {
-        NewListPage.routeName: (context) => NewListPage(),
+        HomePage.routeName: (context) => HomePage(),
         ArticleDetailPage.routeName: (context) => ArticleDetailPage(
             article: ModalRoute.of(context).settings.arguments),
         ArticleWebView.routeName: (context) => ArticleWebView(
@@ -58,14 +65,18 @@ class NewsApp extends StatelessWidget {
   }
 }
 
-class NewListPage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   static const routeName = '/article_list';
 
   @override
-  _NewListPageState createState() => _NewListPageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _NewListPageState extends State<NewListPage> {
+class _HomePageState extends State<HomePage> {
+  final ArticleNotificationHelper _articleNotificationHelper =
+      ArticleNotificationHelper();
+  final ArticleBackgroundService _service = ArticleBackgroundService();
+
   int _bottomNavIndex = 0;
 
   final tabs = [
@@ -73,13 +84,32 @@ class _NewListPageState extends State<NewListPage> {
       create: (_) => NewsProvider(apiService: ApiService()),
       child: ArticleListPage(),
     ),
-    SettingsPages(),
+    ChangeNotifierProvider<SchedulingProvider>(
+      create: (_) => SchedulingProvider(),
+      child: SettingsPages(),
+    ),
   ];
 
   void _onBottomNavTapped(int index) {
     setState(() {
       _bottomNavIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    article_port.listen(
+      (_) async => await _service.someTask(),
+    );
+    _articleNotificationHelper
+        .configureSelectNotificationSubject(ArticleDetailPage.routeName);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    selectNotificationSubject.close();
   }
 
   @override
@@ -184,8 +214,8 @@ class ArticleDetailPage extends StatelessWidget {
                   ),
                   RaisedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, ArticleWebView.routeName,
-                          arguments: article.url);
+                      Navigation.intentWithData(
+                          ArticleWebView.routeName, article.url);
                     },
                     child: Text('Read more'),
                   ),
