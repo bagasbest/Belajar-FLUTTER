@@ -1,14 +1,15 @@
 
-import 'package:beresto/widgets/list_of_foods_and_drinks.dart';
+import 'file:///D:/TUBES_GALERI/Belajar-FLUTTER/beresto/lib/screen/list_of_foods_and_drinks.dart';
+import 'package:beresto/model/restaurant_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SelectMenuPage extends StatelessWidget {
-  final data;
+  final Restaurant restaurant;
   final String dateTime;
   final String seatNumber;
 
-  SelectMenuPage({this.data, this.dateTime, this.seatNumber});
+  SelectMenuPage({this.restaurant, @required this.dateTime, @required this.seatNumber});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,7 @@ class SelectMenuPage extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: 230,
-                    child: ListOfFoodsAndDrinks(data: data, option: 'foods'),
+                    child: ListOfFoodsAndDrinks(data: restaurant, option: restaurant.menus.foods),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -76,7 +77,7 @@ class SelectMenuPage extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: 230,
-                    child: ListOfFoodsAndDrinks(data: data, option: 'drinks'),
+                    child: ListOfFoodsAndDrinks(data: restaurant, option: restaurant.menus.drinks),
                   ),
                   SizedBox(
                     height: 64,
@@ -110,7 +111,7 @@ class SelectMenuPage extends StatelessWidget {
                             onPressed: () {
                               Navigator.pop(context);
                               _showCupertinoDialog(context, dateTime,
-                                  seatNumber, data['name'].toString());
+                                  seatNumber, restaurant.name);
 
                             },
                           ),

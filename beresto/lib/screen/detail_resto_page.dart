@@ -1,12 +1,69 @@
+import 'package:beresto/api/api_service.dart';
+import 'package:beresto/model/restaurant_detail.dart';
+import 'package:beresto/provider/restaurant_detail_provider.dart';
 import 'package:beresto/screen/reservation_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class DetailRestoPage extends StatelessWidget {
-  final data;
+  final restaurantId;
 
-  DetailRestoPage({@required this.data});
+  DetailRestoPage({@required this.restaurantId});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => RestaurantDetailProvider(
+          apiService: ApiService(), restaurantId: restaurantId),
+      child: Consumer<RestaurantDetailProvider>(
+        builder: (context, state, _) {
+          if (state.state == ResultState.Loading) {
+            return Center(
+              child: _shimmerLoadingSkeleton(),
+            );
+          } else if (state.state == ResultState.HasData) {
+            var restaurant = state.detail.restaurant;
+            return DetailRestaurant(restaurant: restaurant);
+          } else {
+            return Center(
+              child: Text(state.message),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _shimmerLoadingSkeleton() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[350],
+      highlightColor: Colors.grey[200],
+      child: ListView.builder(
+        itemCount: 4,
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) {
+          return Container(
+            height: 150,
+            margin: EdgeInsets.only(bottom: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class DetailRestaurant extends StatelessWidget {
+  final Restaurant restaurant;
+
+  DetailRestaurant({this.restaurant});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +75,8 @@ class DetailRestoPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Image.network(
-                  data['pictureId'],
+                  'https://restaurant-api.dicoding.dev/images/small/' +
+                      restaurant.pictureId,
                   fit: BoxFit.fill,
                   height: 250,
                   width: MediaQuery.of(context).size.width,
@@ -29,7 +87,7 @@ class DetailRestoPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        data['name'],
+                        restaurant.name,
                         style: TextStyle(
                             fontSize: 24, fontWeight: FontWeight.bold),
                       ),
@@ -40,7 +98,7 @@ class DetailRestoPage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
                   child: Text(
-                    data['description'],
+                    restaurant.description,
                     maxLines: 5,
                   ),
                 ),
@@ -130,15 +188,15 @@ class DetailRestoPage extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      StarIcon(),
-                      StarIcon(),
-                      StarIcon(),
-                      StarIcon(),
-                      StarIcon(),
+                      starIcon(),
+                      starIcon(),
+                      starIcon(),
+                      starIcon(),
+                      starIcon(),
                       Padding(
                         padding: const EdgeInsets.all(5.0),
-                        child: Text(
-                            data['rating'].toString() + ' / 5.0 . 231 Feeds'),
+                        child: Text(restaurant.rating.toString() +
+                            ' / 5.0 . 231 Feeds'),
                       ),
                     ],
                   ),
@@ -160,7 +218,7 @@ class DetailRestoPage extends StatelessWidget {
                         size: 50,
                       ),
                       Text(
-                        'Location: ' + data['city'],
+                        'Location: ' + restaurant.city,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
@@ -180,7 +238,7 @@ class DetailRestoPage extends StatelessWidget {
                     onPressed: () {
                       Route route = MaterialPageRoute(
                         builder: (context) => ReservationPage(
-                          data: data,
+                          restaurant: restaurant,
                         ),
                       );
                       Navigator.push(context, route);
@@ -216,7 +274,7 @@ class DetailRestoPage extends StatelessWidget {
     );
   }
 
-  Icon StarIcon() {
+  Icon starIcon() {
     return Icon(
       Icons.star,
       color: Colors.orangeAccent,

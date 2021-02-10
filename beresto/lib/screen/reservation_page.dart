@@ -1,3 +1,4 @@
+import 'package:beresto/model/restaurant_detail.dart';
 import 'package:beresto/screen/select_menu_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -5,9 +6,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 String language;
 
 class ReservationPage extends StatefulWidget {
-  final data;
+  final Restaurant restaurant;
 
-  ReservationPage({@required this.data});
+  ReservationPage({@required this.restaurant});
 
   @override
   _ReservationPageState createState() => _ReservationPageState();
@@ -55,7 +56,7 @@ class _ReservationPageState extends State<ReservationPage> {
                     child: Text(
                       'RESERVATION',
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                   ),
                 ),
@@ -90,7 +91,7 @@ class _ReservationPageState extends State<ReservationPage> {
                             Text(
                               'Scheduled at ' + _dateText,
                               style:
-                                  TextStyle(fontSize: 18, color: Colors.grey),
+                              TextStyle(fontSize: 18, color: Colors.grey),
                             ),
                           ],
                         ),
@@ -131,7 +132,7 @@ class _ReservationPageState extends State<ReservationPage> {
                     if (_dateText.isNotEmpty && language != null) {
                       Route route = MaterialPageRoute(
                         builder: (context) => SelectMenuPage(
-                          data: widget.data,
+                          restaurant: widget.restaurant,
                           dateTime: 'Scheduled at $_dateText',
                           seatNumber: language,
                         ),

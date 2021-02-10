@@ -1,7 +1,10 @@
-import 'package:beresto/widgets/list_of_restautant.dart';
+import 'package:beresto/api/api_service.dart';
+import 'package:beresto/provider/restaurant_provider.dart';
+import 'file:///D:/TUBES_GALERI/Belajar-FLUTTER/beresto/lib/screen/list_of_restautant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,7 +20,6 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
-
   String _currentTime() {
     var now = DateTime.now();
     String formattedDate = DateFormat('EEEE, dd-MM-yyyy\nkk:mm').format(now);
@@ -107,7 +109,9 @@ class HomePage extends StatelessWidget {
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height,
-                    child: ListOfRestaurant(),
+                    child: ChangeNotifierProvider(
+                        create: (_) => RestaurantProvider(apiService: ApiService()),
+                        child: ListOfRestaurant()),
                   ),
                 ),
               ],

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+/// MODEL SUBMISSION 1
+
 RestaurantModel restaurantModelFromJson(String str) =>
     RestaurantModel.fromJson(json.decode(str));
 
@@ -8,7 +10,7 @@ String restaurantModelToJson(RestaurantModel data) =>
 
 class RestaurantModel {
   RestaurantModel({
-    this.restaurants,
+     this.restaurants,
   });
 
   List<Restaurant> restaurants;
@@ -26,13 +28,13 @@ class RestaurantModel {
 
 class Restaurant {
   Restaurant({
-    this.id,
-    this.name,
-    this.description,
-    this.pictureId,
-    this.city,
-    this.rating,
-    this.menus,
+     this.id,
+     this.name,
+     this.description,
+     this.pictureId,
+     this.city,
+     this.rating,
+     this.menus,
   });
 
   String id;
@@ -67,7 +69,7 @@ class Restaurant {
 class Menus {
   Menus({
     this.foods,
-    this.drinks,
+     this.drinks,
   });
 
   List<Drink> foods;
@@ -86,7 +88,7 @@ class Menus {
 
 class Drink {
   Drink({
-    this.name,
+     this.name,
   });
 
   String name;
