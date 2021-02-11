@@ -2,6 +2,7 @@ import 'package:beresto/api/api_service.dart';
 import 'package:beresto/model/restaurant_detail.dart';
 import 'package:beresto/provider/restaurant_detail_provider.dart';
 import 'package:beresto/screen/reservation_page.dart';
+import 'package:beresto/screen/review_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -156,23 +157,13 @@ class DetailRestaurant extends StatelessWidget {
                       ),
                       FlatButton(
                         onPressed: () {
-                          showCupertinoDialog(
-                            context: context,
-                            barrierDismissible: true,
-                            builder: (context) {
-                              return CupertinoAlertDialog(
-                                title: Text('Coming Soon :)'),
-                                content: Text(
-                                    'This feature will be developed soon!'),
-                                actions: [
-                                  CupertinoDialogAction(
-                                    child: Text('OK'),
-                                    onPressed: () => Navigator.pop(context),
-                                  ),
-                                ],
-                              );
-                            },
+                          Route route = MaterialPageRoute(
+                            builder: (context) => ReviewPage(
+                              restaurantReview: restaurant.customerReviews,
+                              restaurantId: restaurant.id,
+                            ),
                           );
+                          Navigator.push(context, route);
                         },
                         splashColor: Colors.grey,
                         child: Text(
@@ -218,7 +209,7 @@ class DetailRestaurant extends StatelessWidget {
                         size: 50,
                       ),
                       Text(
-                        'Location: ' + restaurant.city,
+                        'Location: ${restaurant.address}\n' + restaurant.city,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],

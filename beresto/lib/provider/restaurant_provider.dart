@@ -7,8 +7,9 @@ enum ResultState {Loading, NoData, HasData, Error}
 
 class RestaurantProvider extends ChangeNotifier{
   final ApiService apiService;
+  final String query;
 
-  RestaurantProvider({@required this.apiService}){
+  RestaurantProvider({@required this.apiService, @required this.query}){
     _fetchAllRestaurant();
   }
   
@@ -26,7 +27,7 @@ class RestaurantProvider extends ChangeNotifier{
     try {
       _state = ResultState.Loading;
       notifyListeners();
-      final listOfRestaurant = await apiService.listOfRestaurants();
+      final listOfRestaurant = await apiService.listOfRestaurants(query);
       if(listOfRestaurant.restaurants.isEmpty) {
         _state = ResultState.NoData;
         notifyListeners();

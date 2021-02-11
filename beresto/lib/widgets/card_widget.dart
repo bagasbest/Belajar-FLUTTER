@@ -64,6 +64,7 @@ class CardWidget extends StatelessWidget {
                     restaurant.city,
                     style: TextStyle(fontSize: 13),
                   ),
+
                 ],
               ),
               Row(

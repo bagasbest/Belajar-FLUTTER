@@ -19,7 +19,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+String querySearch = '';
+
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  var _controllerSearch = TextEditingController();
+
   String _currentTime() {
     var now = DateTime.now();
     String formattedDate = DateFormat('EEEE, dd-MM-yyyy\nkk:mm').format(now);
@@ -76,29 +85,22 @@ class HomePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: TextField(
+                      controller: _controllerSearch,
                       decoration: InputDecoration(
-                        hintText: 'Kamu mau makan/minum apa ?',
+                        hintText: 'cari berdasarkan nama atau kota',
                         border: InputBorder.none,
                         icon: IconButton(
                           icon: Icon(CupertinoIcons.search),
                           onPressed: () {
-                            showCupertinoDialog(
-                              context: context,
-                              barrierDismissible: true,
-                              builder: (context) {
-                                return CupertinoAlertDialog(
-                                  title: Text('Coming Soon :)'),
-                                  content: Text(
-                                      'This feature will be developed soon!'),
-                                  actions: [
-                                    CupertinoDialogAction(
-                                      child: Text('OK'),
-                                      onPressed: () => Navigator.pop(context),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
+                            setState(() {
+                              querySearch = _controllerSearch.text;
+                            });
+
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        super.widget));
                           },
                         ),
                       ),
@@ -110,7 +112,8 @@ class HomePage extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height,
                     child: ChangeNotifierProvider(
-                        create: (_) => RestaurantProvider(apiService: ApiService()),
+                        create: (_) => RestaurantProvider(
+                            apiService: ApiService(), query: querySearch),
                         child: ListOfRestaurant()),
                   ),
                 ),
