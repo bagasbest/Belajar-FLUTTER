@@ -74,6 +74,7 @@ class _ReservationPageState extends State<ReservationPage> {
                       SizedBox(
                         height: 16,
                       ),
+                      /// Penggunaan FlatButton tidak bisa diganti oleh ElevatedButton, karena memuat properti lain
                       FlatButton(
                         onPressed: () => _selectDueDate(context),
                         color: Colors.grey[200],
@@ -126,6 +127,7 @@ class _ReservationPageState extends State<ReservationPage> {
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 64,
+                /// Penggunaan RaisedButton tidak bisa diganti oleh ElevatedButton, karena memuat properti color
                 child: RaisedButton(
                   color: Colors.orangeAccent,
                   onPressed: () {

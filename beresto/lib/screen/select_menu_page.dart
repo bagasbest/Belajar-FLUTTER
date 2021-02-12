@@ -91,6 +91,7 @@ class SelectMenuPage extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: 64,
+              /// Penggunaan RaisedButton tidak bisa diganti oleh ElevatedButton, karena memuat properti color
               child: RaisedButton(
                 onPressed: () {
                   showCupertinoDialog(

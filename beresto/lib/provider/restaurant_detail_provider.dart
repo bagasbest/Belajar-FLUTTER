@@ -1,6 +1,5 @@
 import 'package:beresto/api/api_service.dart';
 import 'package:beresto/model/restaurant_detail.dart';
-import 'package:beresto/screen/detail_resto_page.dart';
 import 'package:flutter/cupertino.dart';
 
 enum ResultState { Loading, HasData, Error }
@@ -33,10 +32,11 @@ class RestaurantDetailProvider extends ChangeNotifier {
       notifyListeners();
       return _restaurantDetail = detailOfRestaurant;
 
-    } catch (error) {
+    } catch (err) {
       _state = ResultState.Error;
       notifyListeners();
-      return _message = 'Error --> $error';
+      print(err);
+      return _message = 'Maaf, Sedang Terjadi Error Bung, Silahkan Periksa Jaringan Internet Anda atau Mulai Ulang Aplikasi';
     }
   }
 }

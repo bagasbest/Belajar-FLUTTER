@@ -37,10 +37,11 @@ class RestaurantProvider extends ChangeNotifier{
         notifyListeners();
         return _restaurantList = listOfRestaurant;
       }
-    } catch (error) {
+    } catch (err) {
       _state = ResultState.Error;
       notifyListeners();
-      return _message = 'Error --> $error';
+      print(err);
+      return _message = 'Maaf, Sedang Terjadi Error Bung, Silahkan Periksa Jaringan Internet Anda atau Mulai Ulang Aplikasi';
     }
   }
 }

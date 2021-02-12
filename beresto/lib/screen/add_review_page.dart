@@ -1,6 +1,5 @@
 import 'package:beresto/api/api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:beresto/model/review.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AddReviewPage extends StatefulWidget {
@@ -13,12 +12,10 @@ class AddReviewPage extends StatefulWidget {
 }
 
 class _AddReviewPageState extends State<AddReviewPage> {
-  String name = '';
-  String comment = '';
+  var _controllerName = TextEditingController();
+  var _controllerComment = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-
-  CustomerRevieww _review;
 
   @override
   Widget build(BuildContext context) {
@@ -32,57 +29,14 @@ class _AddReviewPageState extends State<AddReviewPage> {
         key: _formKey,
         child: Column(
           children: [
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 1),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'nama kamuhh (3',
-                  border: InputBorder.none,
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'nama tidak boleh kosong beb';
-                  } else {
-                    return null;
-                  }
-                },
-                onChanged: (val) {
-                  name = val;
-                },
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10, bottom: 20),
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 1),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'tambahin komentar',
-                  border: InputBorder.none,
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'komentar tidak boleh kosong';
-                  } else {
-                    return null;
-                  }
-                },
-                onChanged: (val) {
-                  comment = val;
-                },
-              ),
-            ),
+            nameAndCommentFormField('Masukin nama kamu beb',
+                'Ahh, harus diisi beb', _controllerName),
+            nameAndCommentFormField('Masukin komentar kamu beb',
+                'Ahh, harus diisi beb', _controllerComment),
             Container(
               width: 250,
               height: 45,
+              /// Penggunaan RaisedButton tidak bisa diganti oleh ElevatedButton, karena memuat properti color
               child: RaisedButton(
                 color: Colors.orange,
                 child: Text(
@@ -93,11 +47,13 @@ class _AddReviewPageState extends State<AddReviewPage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 onPressed: () async {
-                  if (_formKey.currentState.validate()) {
-                    final CustomerRevieww review = await ApiService()
-                        .review(widget.restaurantId, name, comment);
+                  print('${_controllerName.text} ${_controllerComment.text} ');
+                  if (_formKey.currentState.validate() &&
+                      _controllerName.text.isNotEmpty &&
+                      _controllerComment.text.isNotEmpty) {
+                    await ApiService().review(widget.restaurantId,
+                        _controllerName.text, _controllerComment.text);
                     setState(() {
-                      _review = review;
                       _formKey.currentState.reset();
                     });
 
@@ -106,9 +62,35 @@ class _AddReviewPageState extends State<AddReviewPage> {
                   }
                 },
               ),
-            )
+            ),
           ],
         ),
+      ),
+    );
+  }
+
+  Container nameAndCommentFormField(
+      String hint, String validator, TextEditingController controller) {
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 1),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          hintText: hint,
+          border: InputBorder.none,
+        ),
+        validator: (value) {
+          if (value.isEmpty) {
+            return validator;
+          } else {
+            return null;
+          }
+        },
       ),
     );
   }

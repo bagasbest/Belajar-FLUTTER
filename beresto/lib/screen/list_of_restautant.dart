@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:beresto/provider/restaurant_provider.dart';
 import 'package:beresto/widgets/card_widget.dart';
@@ -10,34 +9,53 @@ import 'package:shimmer/shimmer.dart';
 
 class ListOfRestaurant extends StatelessWidget {
   Widget _buildList() {
-    return Consumer<RestaurantProvider>(
-      builder: (context, state, _) {
-        if (state.state == ResultState.Loading) {
-          return _shimmerLoadingSkeleton();
-        } else if(state.state == ResultState.HasData) {
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: state.list.restaurants.length,
-            itemBuilder: (context, index){
-              var restaurant = state.list.restaurants[index];
-              return CardWidget(restaurant: restaurant);
-            },
-          );
-        } else if(state.state == ResultState.NoData) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(Icons.announcement_outlined, size: 100, color: Colors.grey,),
-                Text(state.message),
-              ],
-            ),
-          );
-        } else {
-          return Center (child: Text(state.message),);
-        }
-      },
+    return Scaffold(
+      body: Consumer<RestaurantProvider>(
+        builder: (context, state, _) {
+          if (state.state == ResultState.Loading) {
+            return _shimmerLoadingSkeleton();
+          } else if (state.state == ResultState.HasData) {
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: state.list.restaurants.length,
+              itemBuilder: (context, index) {
+                var restaurant = state.list.restaurants[index];
+                return CardWidget(restaurant: restaurant);
+              },
+            );
+          } else if (state.state == ResultState.NoData) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.announcement_outlined,
+                    size: 100,
+                    color: Colors.grey,
+                  ),
+                  Text(state.message, textAlign: TextAlign.center,),
+                ],
+              ),
+            );
+          } else {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error,
+                    size: 100,
+                    color: Colors.grey,
+                  ),
+                  Text(state.message, textAlign: TextAlign.center,),
+                ],
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 

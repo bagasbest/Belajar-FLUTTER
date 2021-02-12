@@ -1,9 +1,6 @@
-import 'package:beresto/api/api_service.dart';
 import 'package:beresto/model/restaurant_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 
 import 'add_review_page.dart';
 
@@ -74,37 +71,19 @@ class ReviewItemData extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(
-                    Icons.star,
-                    color: Colors.orange,
-                    size: 20,
-                  ),
-                  Icon(
-                    Icons.star,
-                    color: Colors.orange,
-                    size: 20,
-                  ),
-                  Icon(
-                    Icons.star,
-                    color: Colors.orange,
-                    size: 20,
-                  ),
-                  Icon(
-                    Icons.star,
-                    color: Colors.orange,
-                    size: 20,
-                  ),
-                  Icon(
-                    Icons.star,
-                    color: Colors.orange,
-                    size: 20,
-                  ),
+                  starIcon(),
+                  starIcon(),
+                  starIcon(),
+                  starIcon(),
+                  starIcon(),
                 ],
               ),
               SizedBox(
                 height: 10,
               ),
-              Text('Oleh ${review.name}'),
+              Text(
+                'Oleh ${review.name}',
+              ),
               Text(
                 'Di posting pada ${review.date}',
                 style: TextStyle(color: Colors.grey),
@@ -117,6 +96,14 @@ class ReviewItemData extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Icon starIcon() {
+    return Icon(
+      Icons.star,
+      color: Colors.orange,
+      size: 20,
     );
   }
 }

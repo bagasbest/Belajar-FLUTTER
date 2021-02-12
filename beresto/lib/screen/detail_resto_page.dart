@@ -19,21 +19,34 @@ class DetailRestoPage extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => RestaurantDetailProvider(
           apiService: ApiService(), restaurantId: restaurantId),
-      child: Consumer<RestaurantDetailProvider>(
-        builder: (context, state, _) {
-          if (state.state == ResultState.Loading) {
-            return Center(
-              child: _shimmerLoadingSkeleton(),
-            );
-          } else if (state.state == ResultState.HasData) {
-            var restaurant = state.detail.restaurant;
-            return DetailRestaurant(restaurant: restaurant);
-          } else {
-            return Center(
-              child: Text(state.message),
-            );
-          }
-        },
+      child: Scaffold(
+        body: Consumer<RestaurantDetailProvider>(
+          builder: (context, state, _) {
+            if (state.state == ResultState.Loading) {
+              return Center(
+                child: _shimmerLoadingSkeleton(),
+              );
+            } else if (state.state == ResultState.HasData) {
+              var restaurant = state.detail.restaurant;
+              return DetailRestaurant(restaurant: restaurant);
+            } else {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.error,
+                      size: 100,
+                      color: Colors.grey,
+                    ),
+                    Text(state.message, textAlign: TextAlign.center,),
+                  ],
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }
@@ -75,12 +88,23 @@ class DetailRestaurant extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.network(
-                  'https://restaurant-api.dicoding.dev/images/small/' +
+                Hero(
+                  tag: 'https://restaurant-api.dicoding.dev/images/small/' +
                       restaurant.pictureId,
-                  fit: BoxFit.fill,
-                  height: 250,
-                  width: MediaQuery.of(context).size.width,
+                  child: Container(
+                    height: 250,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          'https://restaurant-api.dicoding.dev/images/small/' +
+                              restaurant.pictureId,
+                        ),
+                        fit: BoxFit.fill,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16),
@@ -155,6 +179,7 @@ class DetailRestaurant extends StatelessWidget {
                         'Feedback',
                         style: TextStyle(fontSize: 18),
                       ),
+                      /// Penggunaan FlatButton tidak bisa diganti oleh ElevatedButton, karena memuat properti splashColor
                       FlatButton(
                         onPressed: () {
                           Route route = MaterialPageRoute(
@@ -225,6 +250,7 @@ class DetailRestaurant extends StatelessWidget {
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: 64,
+                  /// Penggunaan RaisedButton tidak bisa diganti oleh ElevatedButton, karena memuat properti color
                   child: RaisedButton(
                     onPressed: () {
                       Route route = MaterialPageRoute(
