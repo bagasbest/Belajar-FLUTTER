@@ -5,11 +5,11 @@ import 'package:flutter/cupertino.dart';
 
 enum ResultState {Loading, NoData, HasData, Error}
 
-class RestaurantProvider extends ChangeNotifier{
+class RestaurantListAndSearchProvider extends ChangeNotifier{
   final ApiService apiService;
   final String query;
 
-  RestaurantProvider({@required this.apiService, @required this.query}){
+  RestaurantListAndSearchProvider({@required this.apiService, @required this.query}){
     _fetchAllRestaurant();
   }
   

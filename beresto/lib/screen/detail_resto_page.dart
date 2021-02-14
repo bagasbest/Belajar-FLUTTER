@@ -17,10 +17,10 @@ class DetailRestoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => RestaurantDetailProvider(
+      create: (_) => RestaurantDetailAndReviewProvider(
           apiService: ApiService(), restaurantId: restaurantId),
       child: Scaffold(
-        body: Consumer<RestaurantDetailProvider>(
+        body: Consumer<RestaurantDetailAndReviewProvider>(
           builder: (context, state, _) {
             if (state.state == ResultState.Loading) {
               return Center(

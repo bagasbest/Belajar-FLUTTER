@@ -1,6 +1,6 @@
 import 'package:beresto/api/api_service.dart';
 import 'package:beresto/provider/restaurant_provider.dart';
-import 'file:///D:/TUBES_GALERI/Belajar-FLUTTER/beresto/lib/screen/list_of_restautant.dart';
+import 'package:beresto/screen/list_of_restautant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -54,7 +54,10 @@ class _HomePageState extends State<HomePage> {
               'assets/banner.png',
               fit: BoxFit.fitWidth,
               height: 200,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
             ),
           ),
           SafeArea(
@@ -67,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                     child: Text(
                       _currentTime(),
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
                   ),
                 ),
@@ -92,15 +95,17 @@ class _HomePageState extends State<HomePage> {
                         icon: IconButton(
                           icon: Icon(CupertinoIcons.search),
                           onPressed: () {
-                            setState(() {
-                              querySearch = _controllerSearch.text;
-                            });
+                              setState(() {
+                                querySearch = _controllerSearch.text;
+                              },
+                            );
 
                             Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        super.widget));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                  super.widget),
+                            );
                           },
                         ),
                       ),
@@ -109,12 +114,21 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Expanded(
                   child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height,
                     child: ChangeNotifierProvider(
-                        create: (_) => RestaurantProvider(
-                            apiService: ApiService(), query: querySearch),
-                        child: ListOfRestaurant()),
+                      create: (_) =>
+                      /// State Management Provider ini digunakan untuk menampilkan list of Restaurant dan list of search
+                          RestaurantListAndSearchProvider(
+                              apiService: ApiService(), query: querySearch),
+                      child: ListOfRestaurant(),
+                    ),
                   ),
                 ),
               ],

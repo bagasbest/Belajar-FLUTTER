@@ -10,7 +10,7 @@ import 'package:shimmer/shimmer.dart';
 class ListOfRestaurant extends StatelessWidget {
   Widget _buildList() {
     return Scaffold(
-      body: Consumer<RestaurantProvider>(
+      body: Consumer<RestaurantListAndSearchProvider>(
         builder: (context, state, _) {
           if (state.state == ResultState.Loading) {
             return _shimmerLoadingSkeleton();

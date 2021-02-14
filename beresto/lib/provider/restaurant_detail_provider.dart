@@ -4,11 +4,11 @@ import 'package:flutter/cupertino.dart';
 
 enum ResultState { Loading, HasData, Error }
 
-class RestaurantDetailProvider extends ChangeNotifier {
+class RestaurantDetailAndReviewProvider extends ChangeNotifier {
   final ApiService apiService;
   final String restaurantId;
 
-  RestaurantDetailProvider({this.apiService, @required this.restaurantId}) {
+  RestaurantDetailAndReviewProvider({@required this.apiService, @required this.restaurantId}) {
     _fetchDetailRestaurant();
   }
 
