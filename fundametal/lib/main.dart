@@ -11,6 +11,7 @@ import 'package:fundametal/screen/gesture_detection.dart';
 import 'package:fundametal/screen/latihan_cupertino.dart';
 import 'package:fundametal/screen/named_navigation_routing.dart';
 import 'package:fundametal/screen/news_app.dart';
+import 'package:fundametal/screen/note_list_page.dart';
 import 'package:fundametal/screen/notification_detail_page.dart';
 import 'package:fundametal/screen/notification_home_page.dart';
 import 'package:fundametal/screen/shared_preference.dart';
@@ -44,7 +45,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SharedPreference();
+    return NoteListPage();
   }
 }
 
