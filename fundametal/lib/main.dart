@@ -13,6 +13,7 @@ import 'package:fundametal/screen/named_navigation_routing.dart';
 import 'package:fundametal/screen/news_app.dart';
 import 'package:fundametal/screen/notification_detail_page.dart';
 import 'package:fundametal/screen/notification_home_page.dart';
+import 'package:fundametal/screen/shared_preference.dart';
 import 'package:fundametal/screen/sliver_list_and_grid.dart';
 import 'package:fundametal/screen/slivers.dart';
 import 'package:fundametal/screen/state_management.dart';
@@ -43,7 +44,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return NewsApp();
+    return SharedPreference();
   }
 }
 

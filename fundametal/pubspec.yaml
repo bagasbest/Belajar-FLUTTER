@@ -37,6 +37,7 @@ dependencies:
   path_provider: ^1.6.27
   rxdart: ^0.25.0
   android_alarm_manager: ^0.4.5+20
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
