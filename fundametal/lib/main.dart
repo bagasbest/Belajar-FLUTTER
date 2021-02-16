@@ -14,6 +14,7 @@ import 'package:fundametal/screen/news_app.dart';
 import 'package:fundametal/screen/note_list_page.dart';
 import 'package:fundametal/screen/notification_detail_page.dart';
 import 'package:fundametal/screen/notification_home_page.dart';
+import 'package:fundametal/screen/read_and_write_file.dart';
 import 'package:fundametal/screen/shared_preference.dart';
 import 'package:fundametal/screen/sliver_list_and_grid.dart';
 import 'package:fundametal/screen/slivers.dart';
@@ -45,7 +46,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return NoteListPage();
+    return ReadAndWriteFile();
   }
 }
 
