@@ -98,7 +98,7 @@ class HomePage extends StatelessWidget {
   void _openFile(String filePath) async {
     final content = await FileHelper.readFile(filePath);
     _contentController.text = content;
-    _titleController.text = split(filePath).last.split('.').first;
+    _titleController.text = content.split(filePath).last.split('.').first;
   }
 
   @override

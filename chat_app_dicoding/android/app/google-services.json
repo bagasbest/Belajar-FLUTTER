@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "928648194141",
+    "project_id": "chat-app-dicoding",
+    "storage_bucket": "chat-app-dicoding.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928648194141:android:20707808970445aa4685b4",
+        "android_client_info": {
+          "package_name": "com.bagasbest.chat_app_dicoding"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928648194141-eaqjvjme60eo25fa5f03dnlaurfur6lc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRXaVNlcl2Wjj349reftMbcDXf3xYTaPQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "928648194141-eaqjvjme60eo25fa5f03dnlaurfur6lc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

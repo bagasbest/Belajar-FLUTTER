@@ -2,8 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fundametal/model/article_new.dart';
 import 'package:fundametal/service/api_service.dart';
-
-enum ResultState {Loading, NoData, HasData, Error}
+import 'package:fundametal/utils/result_state.dart';
 
 class NewsProvider extends ChangeNotifier {
   final ApiService apiService;

@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,7 @@ class FileDialog extends StatelessWidget {
           final file = files[index];
           return Material(
             child: ListTile(
-              title: Text(split(file.path).last),
+              title: Text(file.toString()),
               onTap: () {
                 Navigator.pop(context, file);
               },

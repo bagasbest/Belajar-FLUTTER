@@ -9,9 +9,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fundametal/common/navigation.dart';
 import 'package:fundametal/model/article_new.dart';
 import 'package:fundametal/provider/news_provider.dart';
+import 'package:fundametal/provider/preferences_provider.dart';
 import 'package:fundametal/provider/schduling_provider.dart';
 import 'package:fundametal/screen/latihan_cupertino.dart';
 import 'package:fundametal/service/api_service.dart';
@@ -19,6 +21,7 @@ import 'package:fundametal/utils/alarm_manager_background_service.dart';
 import 'package:fundametal/utils/article_background_service.dart';
 import 'package:fundametal/utils/article_notification_helper.dart';
 import 'package:fundametal/view/styles.dart';
+import 'bookmark_page.dart';
 import 'file:///D:/TUBES_GALERI/Belajar-FLUTTER/fundametal/lib/screen/article_list_page.dart';
 import 'package:fundametal/widgets/platform_widget.dart';
 import 'file:///D:/TUBES_GALERI/Belajar-FLUTTER/fundametal/lib/screen/settings_page.dart';
@@ -28,38 +31,33 @@ import 'package:webview_flutter/webview_flutter.dart';
 class NewsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: primaryColor,
-        accentColor: secondaryColor,
-        scaffoldBackgroundColor: Colors.white,
-        textTheme: myTextTheme,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        appBarTheme: AppBarTheme(
-          textTheme: myTextTheme.apply(bodyColor: Colors.black),
-          elevation: 0,
-        ),
-        buttonTheme: ButtonThemeData(
-          buttonColor: secondaryColor,
-          textTheme: ButtonTextTheme.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(0)),
-          ),
-        ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          selectedItemColor: secondaryColor,
-          unselectedItemColor: Colors.grey,
-        ),
-      ),
-      navigatorKey: navigatorKey,
-      initialRoute: HomePage.routeName,
-      routes: {
-        HomePage.routeName: (context) => HomePage(),
-        ArticleDetailPage.routeName: (context) => ArticleDetailPage(
-            article: ModalRoute.of(context).settings.arguments),
-        ArticleWebView.routeName: (context) => ArticleWebView(
-              url: ModalRoute.of(context).settings.arguments,
-            ),
+    return Consumer<PreferencesProvider>(
+      builder: (context, provider, child) {
+        return MaterialApp(
+          title: 'News App',
+          theme: provider.themeData,
+          builder: (context, child) {
+            return CupertinoTheme(
+              data: CupertinoThemeData(
+                brightness:
+                    provider.isDarkTheme ? Brightness.dark : Brightness.light,
+              ),
+              child: Material(
+                child: child,
+              ),
+            );
+          },
+          navigatorKey: navigatorKey,
+          initialRoute: HomePage.routeName,
+          routes: {
+            HomePage.routeName: (context) => HomePage(),
+            ArticleDetailPage.routeName: (context) => ArticleDetailPage(
+                article: ModalRoute.of(context).settings.arguments),
+            ArticleWebView.routeName: (context) => ArticleWebView(
+                  url: ModalRoute.of(context).settings.arguments,
+                ),
+          },
+        );
       },
     );
   }
@@ -80,14 +78,9 @@ class _HomePageState extends State<HomePage> {
   int _bottomNavIndex = 0;
 
   final tabs = [
-    ChangeNotifierProvider<NewsProvider>(
-      create: (_) => NewsProvider(apiService: ApiService()),
-      child: ArticleListPage(),
-    ),
-    ChangeNotifierProvider<SchedulingProvider>(
-      create: (_) => SchedulingProvider(),
-      child: SettingsPages(),
-    ),
+    ArticleListPage(),
+    SettingsPages(),
+    BookmarksPage(),
   ];
 
   void _onBottomNavTapped(int index) {
@@ -254,5 +247,11 @@ List<BottomNavigationBarItem> _bottomNavBarItems = [
   BottomNavigationBarItem(
     icon: Icon(Platform.isIOS ? CupertinoIcons.settings : Icons.settings),
     label: 'Settings',
+  ),
+  BottomNavigationBarItem(
+    icon: Icon(Platform.isIOS
+        ? CupertinoIcons.bookmark
+        : Icons.collections_bookmark),
+    label: 'Bookmarks',
   ),
 ];

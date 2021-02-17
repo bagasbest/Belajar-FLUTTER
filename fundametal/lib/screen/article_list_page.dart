@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fundametal/model/article_new.dart';
 import 'package:fundametal/provider/news_provider.dart';
 import 'package:fundametal/service/api_service.dart';
+import 'package:fundametal/utils/result_state.dart';
 import 'package:fundametal/widgets/card_article.dart';
 import 'package:fundametal/widgets/platform_widget.dart';
 import 'package:provider/provider.dart';
