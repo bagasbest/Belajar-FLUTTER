@@ -38,7 +38,8 @@ dependencies:
   flutter_local_notifications:
   path_provider:
   android_alarm_manager:
-
+  shared_preferences:
+  sqflite:
 
 dev_dependencies:
   flutter_launcher_icons: ^0.8.1

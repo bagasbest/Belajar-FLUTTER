@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:beresto/api/api_service.dart';
+import 'package:beresto/provider/preferences_provider.dart';
 import 'package:beresto/provider/restaurant_provider.dart';
+import 'package:beresto/provider/schduling_provider.dart';
 import 'package:beresto/screen/favorite_resto_page.dart';
 import 'package:beresto/screen/list_of_restautant.dart';
 import 'package:beresto/screen/settings_resto_page.dart';
@@ -12,8 +14,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'helper/notification_helper.dart';
+import 'helper/preferences_helper.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -57,13 +61,43 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HomePage(),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => SchedulingProvider()),
+          ChangeNotifierProvider(
+            create: (_) => PreferencesProvider(
+              preferencesHelper: PreferencesHelper(
+                sharedPreferences: SharedPreferences.getInstance(),
+              ),
+            ),
+          ),
+        ],
+
+      child: Consumer<PreferencesProvider>(
+        builder: (context, provider, child) {
+          return MaterialApp(
+            title: 'BeResto App',
+            theme: provider.themeData,
+            builder: (context, child){
+              return CupertinoTheme(
+                data: CupertinoThemeData(
+                  brightness: provider.isNightTheme ? Brightness.dark : Brightness.light,
+                ),
+                child: Material(
+                  child: child,
+                ),
+              );
+            },
+            home: HomePage(),
+          );
+        }
+      ),
     );
   }
 }
 
 String querySearch = '';
+var _controllerSearch = TextEditingController();
 
 class HomePage extends StatefulWidget {
   @override
@@ -71,7 +105,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var _controllerSearch = TextEditingController();
+
 
   String _currentTime() {
     var now = DateTime.now();
@@ -159,15 +193,17 @@ class _HomePageState extends State<HomePage> {
                     ),
                     child: TextField(
                       controller: _controllerSearch,
+                      style: TextStyle(color: Colors.orange),
                       decoration: InputDecoration(
+
                         hintText: 'cari berdasarkan nama atau kota',
                         border: InputBorder.none,
                         icon: IconButton(
-                          icon: Icon(CupertinoIcons.search),
+                          icon: Icon(CupertinoIcons.search, color: Colors.orange,),
                           onPressed: () {
                             setState(
                               () {
-                                querySearch = _controllerSearch.text;
+                                 _controllerSearch.text;
                               },
                             );
 
@@ -189,10 +225,9 @@ class _HomePageState extends State<HomePage> {
                     height: MediaQuery.of(context).size.height,
                     child: ChangeNotifierProvider(
                       create: (_) =>
-
                           /// State Management Provider ini digunakan untuk menampilkan list of Restaurant dan list of search
                           RestaurantListAndSearchProvider(
-                              apiService: ApiService(), query: querySearch),
+                              apiService: ApiService(), query: _controllerSearch.text),
                       child: ListOfRestaurant(),
                     ),
                   ),
