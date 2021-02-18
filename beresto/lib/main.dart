@@ -1,16 +1,60 @@
+import 'dart:io';
+
+import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:beresto/api/api_service.dart';
 import 'package:beresto/provider/restaurant_provider.dart';
+import 'package:beresto/screen/favorite_resto_page.dart';
 import 'package:beresto/screen/list_of_restautant.dart';
+import 'package:beresto/screen/settings_resto_page.dart';
+import 'package:beresto/service/background_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+import 'helper/notification_helper.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final NotificationHelper _notificationHelper = NotificationHelper();
+  final BackgroundService _service = BackgroundService();
+
+  _service.initializeIsolate();
+
+  if (Platform.isAndroid) {
+    await AndroidAlarmManager.initialize();
+  }
+  await _notificationHelper.initNotifications(flutterLocalNotificationsPlugin);
+
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  final NotificationHelper _notificationHelper = NotificationHelper();
+  final BackgroundService _service = BackgroundService();
+
+  @override
+  void initState() {
+    super.initState();
+    port.listen((_) async => await _service.someTask());
+    _notificationHelper.configureSelectNotificationSubject(context);
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    selectNotificationSubject.close();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -54,25 +98,51 @@ class _HomePageState extends State<HomePage> {
               'assets/banner.png',
               fit: BoxFit.fitWidth,
               height: 200,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
+              width: MediaQuery.of(context).size.width,
             ),
           ),
           SafeArea(
             child: Column(
               children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                    padding: EdgeInsets.all(16),
-                    child: Text(
-                      _currentTime(),
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          ),
+                          onPressed: () {
+                            Route route = MaterialPageRoute(
+                              builder: (context) => FavoriteRestoPage(),
+                            );
+                            Navigator.push(context, route);
+                          },
+                        ),
+                        IconButton(
+                            icon: Icon(Icons.settings, color: Colors.orange),
+                            onPressed: () {
+                              Route route = MaterialPageRoute(
+                                builder: (context) => SettingsRestoPage(),
+                              );
+                              Navigator.push(context, route);
+                            }),
+                      ],
                     ),
-                  ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          _currentTime(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Text(
                   'BeResto\nBebas Pilih Resto Favoritmu',
@@ -95,7 +165,8 @@ class _HomePageState extends State<HomePage> {
                         icon: IconButton(
                           icon: Icon(CupertinoIcons.search),
                           onPressed: () {
-                              setState(() {
+                            setState(
+                              () {
                                 querySearch = _controllerSearch.text;
                               },
                             );
@@ -104,7 +175,7 @@ class _HomePageState extends State<HomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                  super.widget),
+                                      super.widget),
                             );
                           },
                         ),
@@ -114,17 +185,12 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Expanded(
                   child: Container(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
                     child: ChangeNotifierProvider(
                       create: (_) =>
-                      /// State Management Provider ini digunakan untuk menampilkan list of Restaurant dan list of search
+
+                          /// State Management Provider ini digunakan untuk menampilkan list of Restaurant dan list of search
                           RestaurantListAndSearchProvider(
                               apiService: ApiService(), query: querySearch),
                       child: ListOfRestaurant(),

@@ -35,13 +35,17 @@ dependencies:
   provider:
   rxdart:
   shimmer:
+  flutter_local_notifications:
+  path_provider:
+  android_alarm_manager:
+
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.8.1
+  flutter_launcher_name: "^0.0.1"
+
   flutter_test:
     sdk: flutter
-
-  flutter_launcher_icons: "^0.8.0"
-  flutter_launcher_name: "^0.0.1"
 
 flutter_icons:
   android: true
