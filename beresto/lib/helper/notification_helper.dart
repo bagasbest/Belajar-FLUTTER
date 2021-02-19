@@ -57,7 +57,7 @@ class NotificationHelper {
         _channelId, _channelName, _channelDescription,
       importance: Importance.max,
       priority: Priority.high,
-      ticker: 'tiicker',
+      ticker: 'ticker',
       styleInformation: DefaultStyleInformation(true, true));
 
     var iosPlatformChannelSpecifics = IOSNotificationDetails();

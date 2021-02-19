@@ -29,9 +29,9 @@ class _AddReviewPageState extends State<AddReviewPage> {
         key: _formKey,
         child: Column(
           children: [
-            nameAndCommentFormField('Masukin nama kamu beb',
+            _nameAndCommentFormField('Masukin nama kamu beb',
                 'Ahh, harus diisi beb', _controllerName),
-            nameAndCommentFormField('Masukin komentar kamu beb',
+            _nameAndCommentFormField('Masukin komentar kamu beb',
                 'Ahh, harus diisi beb', _controllerComment),
             Container(
               width: 250,
@@ -69,7 +69,7 @@ class _AddReviewPageState extends State<AddReviewPage> {
     );
   }
 
-  Container nameAndCommentFormField(
+  Container _nameAndCommentFormField(
       String hint, String validator, TextEditingController controller) {
     return Container(
       margin: EdgeInsets.only(top: 10),

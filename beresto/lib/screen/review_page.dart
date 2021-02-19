@@ -2,6 +2,7 @@ import 'package:beresto/api/api_service.dart';
 import 'package:beresto/model/restaurant_detail.dart';
 import 'package:beresto/provider/restaurant_detail_provider.dart';
 import 'package:beresto/provider/restaurant_provider.dart';
+import 'package:beresto/screen/review_item_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,6 @@ class ReviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider(
       /// State management Provider ini digunakan pada saat menampilkan Detail Restaurant dan Review Restaurant
       create: (_) => RestaurantDetailAndReviewProvider(
@@ -74,18 +74,20 @@ class ReviewPage extends StatelessWidget {
                       size: 100,
                       color: Colors.grey,
                     ),
-                    Text(state.message, textAlign: TextAlign.center,),
+                    Text(
+                      state.message,
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
               );
             }
           },
         ),
-
-        ),
-
-      );
+      ),
+    );
   }
+
   Widget _shimmerLoadingSkeleton() {
     return Shimmer.fromColors(
       baseColor: Colors.grey[350],
@@ -106,69 +108,6 @@ class ReviewPage extends StatelessWidget {
         },
       ),
     );
-}
-
-
-
-
-}
-
-class ReviewItemData extends StatelessWidget {
-  final review;
-
-  ReviewItemData({@required this.review});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 16, right: 16, top: 10),
-      child: Card(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  starIcon(),
-                  starIcon(),
-                  starIcon(),
-                  starIcon(),
-                  starIcon(),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                'Oleh ${review.name}',
-              ),
-              Text(
-                'Di posting pada ${review.date}',
-                style: TextStyle(color: Colors.grey),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(review.review),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Icon starIcon() {
-    return Icon(
-      Icons.star,
-      color: Colors.orange,
-      size: 20,
-    );
   }
 }
-
 

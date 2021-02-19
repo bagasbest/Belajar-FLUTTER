@@ -37,7 +37,7 @@ class SelectMenuPage extends StatelessWidget {
                 child: _shimmerLoadingSkeleton(),
               );
             } else if (state.state == ResultState.HasData) {
-              return buildStack(context);
+              return _buildStack(context);
             } else {
               return Center(
                 child: Column(
@@ -63,7 +63,7 @@ class SelectMenuPage extends StatelessWidget {
     );
   }
 
-  Stack buildStack(BuildContext context) {
+  Stack _buildStack(BuildContext context) {
     return Stack(
       children: [
         SingleChildScrollView(
