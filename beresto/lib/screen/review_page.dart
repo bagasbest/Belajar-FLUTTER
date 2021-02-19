@@ -1,6 +1,7 @@
 import 'package:beresto/api/api_service.dart';
 import 'package:beresto/model/restaurant_detail.dart';
 import 'package:beresto/provider/restaurant_detail_provider.dart';
+import 'package:beresto/provider/restaurant_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

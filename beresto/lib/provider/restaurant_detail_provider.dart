@@ -1,8 +1,9 @@
 import 'package:beresto/api/api_service.dart';
 import 'package:beresto/model/restaurant_detail.dart';
+import 'package:beresto/provider/restaurant_provider.dart';
 import 'package:flutter/cupertino.dart';
 
-enum ResultState { Loading, HasData, Error }
+
 
 class RestaurantDetailAndReviewProvider extends ChangeNotifier {
   final ApiService apiService;

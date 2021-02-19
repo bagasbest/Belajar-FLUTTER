@@ -15,8 +15,9 @@ class CardWidget extends StatelessWidget {
       onTap: () {
         Route route = MaterialPageRoute(
           builder: (context) => DetailRestoPage(
-              restaurantId: restaurant.id,
-              ),
+            restaurantId: restaurant.id,
+            restaurantList: restaurant,
+          ),
         );
         Navigator.push(context, route);
       },
@@ -64,7 +65,6 @@ class CardWidget extends StatelessWidget {
                     restaurant.city,
                     style: TextStyle(fontSize: 13),
                   ),
-
                 ],
               ),
               Row(

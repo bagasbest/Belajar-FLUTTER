@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:beresto/api/api_service.dart';
+import 'package:beresto/provider/database_provider.dart';
 import 'package:beresto/provider/preferences_provider.dart';
 import 'package:beresto/provider/restaurant_provider.dart';
 import 'package:beresto/provider/schduling_provider.dart';
@@ -16,6 +17,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'helper/database_helper.dart';
 import 'helper/notification_helper.dart';
 import 'helper/preferences_helper.dart';
 
@@ -43,7 +45,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   final NotificationHelper _notificationHelper = NotificationHelper();
   final BackgroundService _service = BackgroundService();
 
@@ -53,6 +54,7 @@ class _MyAppState extends State<MyApp> {
     port.listen((_) async => await _service.someTask());
     _notificationHelper.configureSelectNotificationSubject(context);
   }
+
   @override
   void dispose() {
     super.dispose();
@@ -62,36 +64,37 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => SchedulingProvider()),
-          ChangeNotifierProvider(
-            create: (_) => PreferencesProvider(
-              preferencesHelper: PreferencesHelper(
-                sharedPreferences: SharedPreferences.getInstance(),
-              ),
+      providers: [
+        ChangeNotifierProvider(create: (_) => SchedulingProvider()),
+        ChangeNotifierProvider(
+          create: (_) => PreferencesProvider(
+            preferencesHelper: PreferencesHelper(
+              sharedPreferences: SharedPreferences.getInstance(),
             ),
           ),
-        ],
-
-      child: Consumer<PreferencesProvider>(
-        builder: (context, provider, child) {
-          return MaterialApp(
-            title: 'BeResto App',
-            theme: provider.themeData,
-            builder: (context, child){
-              return CupertinoTheme(
-                data: CupertinoThemeData(
-                  brightness: provider.isNightTheme ? Brightness.dark : Brightness.light,
-                ),
-                child: Material(
-                  child: child,
-                ),
-              );
-            },
-            home: HomePage(),
-          );
-        }
-      ),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => DatabaseProvider(databaseHelper: DatabaseHelper()),
+        ),
+      ],
+      child: Consumer<PreferencesProvider>(builder: (context, provider, child) {
+        return MaterialApp(
+          title: 'BeResto App',
+          theme: provider.themeData,
+          builder: (context, child) {
+            return CupertinoTheme(
+              data: CupertinoThemeData(
+                brightness:
+                    provider.isNightTheme ? Brightness.dark : Brightness.light,
+              ),
+              child: Material(
+                child: child,
+              ),
+            );
+          },
+          home: HomePage(),
+        );
+      }),
     );
   }
 }
@@ -105,8 +108,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-
   String _currentTime() {
     var now = DateTime.now();
     String formattedDate = DateFormat('EEEE, dd-MM-yyyy\nkk:mm').format(now);
@@ -195,15 +196,17 @@ class _HomePageState extends State<HomePage> {
                       controller: _controllerSearch,
                       style: TextStyle(color: Colors.orange),
                       decoration: InputDecoration(
-
                         hintText: 'cari berdasarkan nama atau kota',
                         border: InputBorder.none,
                         icon: IconButton(
-                          icon: Icon(CupertinoIcons.search, color: Colors.orange,),
+                          icon: Icon(
+                            CupertinoIcons.search,
+                            color: Colors.orange,
+                          ),
                           onPressed: () {
                             setState(
                               () {
-                                 _controllerSearch.text;
+                                _controllerSearch.text;
                               },
                             );
 
@@ -225,9 +228,11 @@ class _HomePageState extends State<HomePage> {
                     height: MediaQuery.of(context).size.height,
                     child: ChangeNotifierProvider(
                       create: (_) =>
+
                           /// State Management Provider ini digunakan untuk menampilkan list of Restaurant dan list of search
                           RestaurantListAndSearchProvider(
-                              apiService: ApiService(), query: _controllerSearch.text),
+                              apiService: ApiService(),
+                              query: _controllerSearch.text),
                       child: ListOfRestaurant(),
                     ),
                   ),
